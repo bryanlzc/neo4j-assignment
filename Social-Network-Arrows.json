@@ -1,0 +1,318 @@
+{
+  "style": {
+    "font-family": "sans-serif",
+    "background-color": "#ffffff",
+    "background-image": "",
+    "background-size": "100%",
+    "node-color": "#ffffff",
+    "border-width": 4,
+    "border-color": "#000000",
+    "radius": 50,
+    "node-padding": 5,
+    "node-margin": 2,
+    "outside-position": "auto",
+    "node-icon-image": "",
+    "node-background-image": "",
+    "icon-position": "inside",
+    "icon-size": 64,
+    "caption-position": "inside",
+    "caption-max-width": 200,
+    "caption-color": "#000000",
+    "caption-font-size": 50,
+    "caption-font-weight": "normal",
+    "label-position": "inside",
+    "label-display": "pill",
+    "label-color": "#000000",
+    "label-background-color": "#ffffff",
+    "label-border-color": "#000000",
+    "label-border-width": 4,
+    "label-font-size": 40,
+    "label-padding": 5,
+    "label-margin": 4,
+    "directionality": "directed",
+    "detail-position": "inline",
+    "detail-orientation": "parallel",
+    "arrow-width": 5,
+    "arrow-color": "#000000",
+    "margin-start": 5,
+    "margin-end": 5,
+    "margin-peer": 20,
+    "attachment-start": "normal",
+    "attachment-end": "normal",
+    "relationship-icon-image": "",
+    "type-color": "#000000",
+    "type-background-color": "#ffffff",
+    "type-border-color": "#000000",
+    "type-border-width": 0,
+    "type-font-size": 16,
+    "type-padding": 5,
+    "property-position": "outside",
+    "property-alignment": "colon",
+    "property-color": "#000000",
+    "property-font-size": 16,
+    "property-font-weight": "normal"
+  },
+  "nodes": [
+    {
+      "id": "n0",
+      "position": {
+        "x": 107.74066783754789,
+        "y": 55.38509598413458
+      },
+      "caption": "",
+      "labels": [
+        "person"
+      ],
+      "properties": {
+        "name": "row.name",
+        "passportnumber": "row.passportnumber",
+        "citizenship": "row.citizenship"
+      },
+      "style": {}
+    },
+    {
+      "id": "n1",
+      "position": {
+        "x": 524.3118437179454,
+        "y": 390.9562022391223
+      },
+      "caption": "",
+      "labels": [
+        "course"
+      ],
+      "properties": {
+        "name": "row.course"
+      },
+      "style": {}
+    },
+    {
+      "id": "n2",
+      "position": {
+        "x": 535.7992495074548,
+        "y": -49.65109482950085
+      },
+      "caption": "",
+      "labels": [
+        "institution"
+      ],
+      "properties": {
+        "name": "row.nameofinstitution",
+        "country": "row.country"
+      },
+      "style": {}
+    },
+    {
+      "id": "n5",
+      "position": {
+        "x": 14.41709272955056,
+        "y": -471.33135739152686
+      },
+      "caption": "",
+      "labels": [
+        "merchant"
+      ],
+      "properties": {
+        "name": "row.merchant",
+        "country": "row.country"
+      },
+      "style": {}
+    },
+    {
+      "id": "n10",
+      "position": {
+        "x": -296.59243935211623,
+        "y": 230.8316381337088
+      },
+      "caption": "",
+      "labels": [
+        "origin"
+      ],
+      "properties": {
+        "date": "long"
+      },
+      "style": {}
+    },
+    {
+      "id": "n11",
+      "position": {
+        "x": -427.7048789790553,
+        "y": 518.2526378360486
+      },
+      "caption": "",
+      "labels": [
+        "destination"
+      ],
+      "properties": {
+        "country": "row.arrivalcountry"
+      },
+      "style": {}
+    },
+    {
+      "id": "n12",
+      "position": {
+        "x": -582.1429342992238,
+        "y": 319.77522244999096
+      },
+      "caption": "",
+      "labels": [
+        "departuredate"
+      ],
+      "properties": {
+        "date": "row.departuredate"
+      },
+      "style": {}
+    },
+    {
+      "id": "n13",
+      "position": {
+        "x": -109.04436689269872,
+        "y": 555.6744284950291
+      },
+      "caption": "",
+      "labels": [
+        "arrivaldate"
+      ],
+      "properties": {
+        "date": "row.arrivaldate"
+      },
+      "style": {}
+    },
+    {
+      "id": "n14",
+      "position": {
+        "x": -582.1429342992238,
+        "y": 107.57224125578702
+      },
+      "caption": "",
+      "labels": [
+        "organization"
+      ],
+      "properties": {
+        "name": "row.nameoforganization",
+        "country": "row.country"
+      },
+      "style": {}
+    },
+    {
+      "id": "n18",
+      "position": {
+        "x": -462.92302986704215,
+        "y": -232.74871917047466
+      },
+      "caption": "",
+      "labels": [
+        "designation"
+      ],
+      "properties": {
+        "name": "string"
+      },
+      "style": {}
+    }
+  ],
+  "relationships": [
+    {
+      "id": "n0",
+      "fromId": "n0",
+      "toId": "n1",
+      "type": "enrolled_in",
+      "properties": {
+        "startyear": "row.startyear",
+        "endyear": "row.endyear"
+      },
+      "style": {}
+    },
+    {
+      "id": "n2",
+      "fromId": "n2",
+      "toId": "n1",
+      "type": "offers",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n3",
+      "fromId": "n0",
+      "toId": "n2",
+      "type": "studied_in",
+      "properties": {
+        "staryear": "row.startyear",
+        "endyear": "row.endyear"
+      },
+      "style": {}
+    },
+    {
+      "id": "n7",
+      "type": "makes_transaction_at",
+      "style": {},
+      "properties": {
+        "transactiondate": "row.transactiondate",
+        "amount": "row.amount",
+        "cardnumber": "row.cardnumber"
+      },
+      "fromId": "n0",
+      "toId": "n5"
+    },
+    {
+      "id": "n16",
+      "type": "is_departing_from",
+      "style": {},
+      "properties": {},
+      "fromId": "n0",
+      "toId": "n10"
+    },
+    {
+      "id": "n18",
+      "type": "on",
+      "style": {},
+      "properties": {},
+      "fromId": "n10",
+      "toId": "n12"
+    },
+    {
+      "id": "n19",
+      "fromId": "n12",
+      "toId": "n11",
+      "type": "to",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n20",
+      "fromId": "n11",
+      "toId": "n13",
+      "type": "arriving_on",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n22",
+      "fromId": "n0",
+      "toId": "n14",
+      "type": "works_for",
+      "properties": {
+        "startyear": "row.startyear",
+        "endyear": "row.endyear"
+      },
+      "style": {}
+    },
+    {
+      "id": "n26",
+      "type": "holding_designation_of",
+      "style": {},
+      "properties": {},
+      "fromId": "n14",
+      "toId": "n18"
+    },
+    {
+      "id": "n27",
+      "fromId": "n0",
+      "toId": "n18",
+      "type": "designation_is",
+      "properties": {
+        "startyear": "row.startyear",
+        "endyear": "row.endyear"
+      },
+      "style": {}
+    }
+  ]
+}
