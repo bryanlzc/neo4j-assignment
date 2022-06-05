@@ -105,12 +105,15 @@ query_string = '''
     WITH p
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_trips.csv' as row
     MATCH (p:person {name: row.name, passportnumber: row.passportnumber, citizenship: row.citizenship})
-    MERGE (dd:departuredate {date: row.departuredate})
     MERGE (o:origin { country: row.departurecountry})
+    MERGE (p)-[:is_departing_from]->(o)
+    WITH p,o
+    LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_trips.csv' as row
+    MATCH (o:origin { country: row.departurecountry})
+    MERGE (dd:departuredate {date: row.departuredate})
     MERGE (dc:destination { country: row.arrivalcountry})
     MERGE (ad:arrivaldate { date: row.arrivaldate})
-    ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber, p.citizenship = row.citizenship
-    MERGE (p)-[:is_departing_from]->(o)-[:on]->(dd)-[:to]->(dc)-[:arriving_on]->(ad)
+    MERGE (o)-[:on]->(dd)-[:to]->(dc)-[:arriving_on]->(ad)
 
 '''
 
