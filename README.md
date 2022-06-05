@@ -43,12 +43,15 @@ password: test
 
 # Ingest Data to Neo4j
 
-## Using Social network 
+Pre-requisite: Install Neo4j python library
+```
+pip3 install neo4j
+```
+## Using Social Network dataset [Social Network](https://gist.github.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc)
 
 ## Connection class to connect to Neo4j server
 Run the below in Jupyter Notebook to establish connection to Neo4j server:
 ```
-import pandas as pd
 from neo4j import GraphDatabase
 
 class Neo4jConnection:
