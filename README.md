@@ -212,17 +212,29 @@ MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)
 RETURN p.name as name, toInteger(right(dep.date,4)) as year, count(toInteger(right(dep.date,4))) as freq_travel
 ORDER BY year
 ```
-## Most top 5 most popular destination
+## Top 5 most popular destination
 ```
 MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
 RETURN arr.country as country, count(arr.country) as freq
 ORDER BY freq DESC
 LIMIT 5
 ```
+## Finding common travelled destination by date (Answer: Vietnam, Sunday 26 Sept)
+```
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
+RETURN p,ori,dep,arr
+```
+
+Note: Find common intersection between nodes
+
+## Finding common institution studied at (Answer: Smart University of Vietnam)
+```
+
+
+```
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
 ```
-import pandas as pd
 from neo4j import GraphDatabase
 
 class Neo4jConnection:
@@ -264,7 +276,9 @@ conn = Neo4jConnection(neo4jUri, userName, password)
 
 ```
 
+# INSIGHTS
 
+Alice Gan, Ariff Johan and Anil Kumar are friends/acquaintance from Smart National University of Vietnam
 
 
 
