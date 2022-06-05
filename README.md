@@ -203,14 +203,19 @@ ORDER BY country_total_transaction DESC
 
 Note: t.amount has Datatype string due to "$" and could be taken care of during the ingestion using the substring method or during query as shown above
 
-
-## Find the correlation between designation and total transacted amount of each person 
-
-
 ## Find frequency of travel per year
-
-
-## Most popular destination
+```
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
+RETURN p.name as name, toInteger(right(dep.date,4)) as year, count(toInteger(right(dep.date,4))) as freq_travel
+ORDER BY year
+```
+## Most top 5 most popular destination
+```
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
+RETURN arr.country as country, count(arr.country) as freq
+ORDER BY freq DESC
+LIMIT 5
+```
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
 ```
