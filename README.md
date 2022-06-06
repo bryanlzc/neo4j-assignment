@@ -136,19 +136,16 @@ query_string = '''
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })
     MERGE (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (c:course {name: row.course })
-    ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber
     MERGE (c)<-[:enrolled_in {startyear: row.startyear, endyear: row.endyear}]-(p)-[:studied_in {startyear: row.startyear, endyear: row.endyear}]->(i)
     WITH i,c,p
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
     MATCH (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (i)-[:offers]->(c)
-    ON CREATE SET i.name = row.nameofinstitution, i.country = row.country, c.name = row.course
-
+   
 '''
 
 # Ingesting education dataset to neo4j using the data model
 conn.query(query_string, db='neo4j')
-
 
 ```
 
@@ -161,7 +158,6 @@ query_string = '''
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })      
     MERGE (o:organization {name: row.nameoforganization, country: row.country })
     MERGE (des:designation { name: row.designation})
-    ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber
     MERGE (des)<-[:designation_is {startyear: row.startyear, endyear: row.endyear}]-(p)-[:works_for {startyear: row.startyear, endyear: row.endyear}]->(o)
     WITH o,p,des
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_work.csv' as row
@@ -172,7 +168,6 @@ query_string = '''
 
 # Ingesting work dataset to neo4j using the data model
 conn.query(query_string, db='neo4j')
-
 
 ```
 
@@ -186,7 +181,6 @@ query_string = '''
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })      
     MERGE (m:merchant {name: row.merchant, country: row.country })
     MERGE (p)-[:makes_transaction_at {transactiondate: row.transactiondate, amount: row.amount, cardnumber: row.cardnumber}]->(m)
-    ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber
 '''
 
 # Ingesting transaction dataset to neo4j using the data model
@@ -194,8 +188,8 @@ conn.query(query_string, db='testdb')
 
 ```
 
-# Cypher queries
-## Find the total transacted amount in each individual country sorted by descending order
+# Cypher queries 
+## Finding the total transacted amount in each individual country sorted by descending order (Answer: Vietnam - Highest amount transacted)
 
 ```
 MATCH (p:person)-[t:makes_transaction_at]->(m:merchant)
@@ -206,32 +200,49 @@ ORDER BY country_total_transaction DESC
 
 Note: t.amount has Datatype string due to "$" and could be taken care of during the ingestion using the substring method or during query as shown above
 
-## Find frequency of travel per year
+## Finding frequency of travel per year 
 ```
 MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
 RETURN p.name as name, toInteger(right(dep.date,4)) as year, count(toInteger(right(dep.date,4))) as freq_travel
 ORDER BY year
 ```
-## Top 5 most popular destination
+
+## Top 5 most popular destination (Answer: Vietnam - Most popular destination)
 ```
 MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
 RETURN arr.country as country, count(arr.country) as freq
 ORDER BY freq DESC
 LIMIT 5
 ```
-## Finding common travelled destination by date (Answer: Vietnam, Sunday 26 Sept)
+
+## Finding persons with similar travel history to Vietnam by date
 ```
-MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination)
-RETURN p,ori,dep,arr
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})->(ad:arrivaldate)
+RETURN p.name, ad.date
 ```
 
-Note: Find common intersection between nodes
+## Use case: 
 
 ## Finding common institution studied at (Answer: Smart University of Vietnam)
 ```
 
+MATCH (:Reader {name:'Alice'})-[:LIKES]->(:Book {title:'Dune'})
+ <-[:LIKES]-(:Reader)-[:LIKES]->(books:Book)
+RETURN books.title
+
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})
+RETURN p.name
+```
+
+## Use case: Finding person with similar interest in Vietnam
 
 ```
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})-[aon:arriving_on]->(ad:arrivaldate { date: 'Sunday, 26 September 2021' })
+RETURN p
+```
+
+## Use case: 
+
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
 ```
