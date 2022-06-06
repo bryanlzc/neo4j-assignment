@@ -335,12 +335,24 @@ conn = Neo4jConnection(neo4jUri, userName, password)
 # BLOOM
 
 ## Generate new perspective with Bloom
+![image](https://user-images.githubusercontent.com/19281954/172133559-65cd5492-c8a6-4421-bfee-f301b038c4f7.png)
 
+## Starting with Person nodes
+<img width="960" alt="Bloom - Person (Relationship)" src="https://user-images.githubusercontent.com/19281954/172133353-11b2df10-3048-49ca-b6c5-b19313dcc290.png">
+
+Hold shift and click on the Person nodes
+
+Right click and expand relationship for studied_in, travelling_to, makes_transaction_in
+
+Expanding relationship to obtain the graph as shown above
+
+## Using search bar to search for relationships
+<img width="960" alt="Bloom - Person (Relationship 2)" src="https://user-images.githubusercontent.com/19281954/172134008-9cf8b358-bb28-4f5f-938d-b1ff69707b49.png">
 
 
 # INSIGHTS
 
-Alice Gan, Ariff Johan and Anil Kumar are friends/acquaintance from Smart National University of Vietnam
+Alice Gan, Ariff Johan and Anil Kumar are friends/acquaintance from Smart National University of Vietnam and travelled again to Vietnam on the same date together living in the same hotel (Grand Coconut Hotel, Vietnam)
 
 
 
