@@ -111,9 +111,15 @@ query_string = '''
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_trips.csv' as row
     MATCH (o:origin { country: row.departurecountry})
     MERGE (dd:departuredate {date: row.departuredate})
+    MERGE (o)-[:on]->(dd)
+    WITH o,dd,p
+    LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_trips.csv' as row
+    MATCH (dd:departuredate {date: row.departuredate})
     MERGE (dc:destination { country: row.arrivalcountry})
+    MERGE (c:country { country: row.arrivalcountry})
     MERGE (ad:arrivaldate { date: row.arrivaldate})
-    MERGE (o)-[:on]->(dd)-[:to]->(dc)-[:arriving_on]->(ad)
+    MERGE (dd)-[:to]->(dc)-[:arriving_on]->(ad)
+    MERGE (p)-[:travelling_to]->(c)
 
 '''
 
@@ -136,13 +142,19 @@ query_string = '''
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })
     MERGE (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (c:course {name: row.course })
+    ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber
     MERGE (c)<-[:enrolled_in {startyear: row.startyear, endyear: row.endyear}]-(p)-[:studied_in {startyear: row.startyear, endyear: row.endyear}]->(i)
     WITH i,c,p
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
     MATCH (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (i)-[:offers]->(c)
-   
+    WITH i
+    LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
+    MATCH (i:institution {name: row.nameofinstitution, country: row.country })
+    MERGE (co:country {country: row.country})
+    MERGE (i)-[:located_in]->(co)
 '''
+
 
 # Ingesting education dataset to neo4j using the data model
 conn.query(query_string, db='neo4j')
@@ -180,7 +192,10 @@ query_string = '''
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_transaction.csv' as row
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })      
     MERGE (m:merchant {name: row.merchant, country: row.country })
+    MERGE (co:country {country: row.country})
     MERGE (p)-[:makes_transaction_at {transactiondate: row.transactiondate, amount: row.amount, cardnumber: row.cardnumber}]->(m)
+    MERGE (p)-[:makes_transaction_in]->(co)
+    
 '''
 
 # Ingesting transaction dataset to neo4j using the data model
@@ -217,8 +232,8 @@ LIMIT 5
 
 ## Finding persons with similar travel history to Vietnam by date
 ```
-MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})->(ad:arrivaldate)
-RETURN p.name, ad.date
+MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})-[aon:arriving_on]->(ad:arrivaldate)
+RETURN collect(p.name) as list_of_person_arriving_in_vietnam, ad.date as date
 ```
 
 ## Use case: 
