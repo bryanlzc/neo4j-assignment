@@ -280,6 +280,14 @@ RETURN p,relationship,c
 ```
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
+## Provision a Neo4j Sandbox Environment 
+
+Register for an account with a valid email address
+
+Create a blank sandbox environment
+
+
+## Connecting to Neo4j Sandbox Environment
 ```
 from neo4j import GraphDatabase
 
@@ -321,6 +329,14 @@ password = "regulation-quarterdecks-centerlines"
 conn = Neo4jConnection(neo4jUri, userName, password)
 
 ```
+
+## Note: Re-use queries above and replace conn.query(query_string, db='testdb') to conn.query(query_string, db='neo4j')
+
+# BLOOM
+
+## Generate new perspective with Bloom
+
+
 
 # INSIGHTS
 
