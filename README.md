@@ -148,11 +148,12 @@ query_string = '''
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
     MATCH (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (i)-[:offers]->(c)
-    WITH i
+    WITH i,p
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
     MATCH (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (co:country {country: row.country})
     MERGE (i)-[:located_in]->(co)
+    MERGE (p)-[:studied_in]->(co)
 '''
 
 
@@ -203,6 +204,42 @@ conn.query(query_string, db='testdb')
 
 ```
 
+# Creating Index 
+
+## Purpose: Optimize query performance for node properties used in frequent lookups
+```
+# Creating person_name index
+query_string = '''
+
+    CREATE INDEX person_name FOR (p:person) ON (p.name)
+
+'''
+
+conn.query(query_string, db='testdb')
+```
+
+```
+# Creating country_name index
+query_string = '''
+
+    CREATE INDEX country_name FOR (co:country) ON (co.country)
+
+'''
+
+conn.query(query_string, db='testdb')
+```
+
+```
+# Creating institution_name index
+query_string = '''
+
+    CREATE INDEX institution_name FOR (i:institution) ON (i.name)
+
+'''
+
+conn.query(query_string, db='testdb')
+```
+
 # Cypher queries 
 ## Finding the total transacted amount in each individual country sorted by descending order (Answer: Vietnam - Highest amount transacted)
 
@@ -237,7 +274,10 @@ RETURN collect(p.name) as list_of_person_arriving_in_vietnam, ad.date as date
 ```
 
 ## Use case: Finding relationship connected by Vietnam between the 3 person
-
+```
+MATCH (p:person)-[relationship]->(c:country { country: "Vietnam"})
+RETURN p,relationship,c
+```
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
 ```
