@@ -56,8 +56,8 @@
     {
       "id": "n0",
       "position": {
-        "x": 107.74066783754789,
-        "y": 55.38509598413458
+        "x": 49.24390671443933,
+        "y": 18.77628477215046
       },
       "caption": "",
       "labels": [
@@ -207,6 +207,21 @@
         "name": "string"
       },
       "style": {}
+    },
+    {
+      "id": "n19",
+      "position": {
+        "x": 316.7211881624501,
+        "y": -232.74871917047466
+      },
+      "caption": "",
+      "style": {},
+      "labels": [
+        "country"
+      ],
+      "properties": {
+        "country": "row.country"
+      }
     }
   ],
   "relationships": [
@@ -313,6 +328,38 @@
         "endyear": "row.endyear"
       },
       "style": {}
+    },
+    {
+      "id": "n28",
+      "type": "travelling_to",
+      "style": {},
+      "properties": {},
+      "fromId": "n0",
+      "toId": "n19"
+    },
+    {
+      "id": "n29",
+      "type": "located_in",
+      "style": {},
+      "properties": {},
+      "fromId": "n2",
+      "toId": "n19"
+    },
+    {
+      "id": "n30",
+      "type": "studied_in",
+      "style": {},
+      "properties": {},
+      "fromId": "n0",
+      "toId": "n19"
+    },
+    {
+      "id": "n31",
+      "type": "makes_transaction_in",
+      "style": {},
+      "properties": {},
+      "fromId": "n0",
+      "toId": "n19"
     }
   ]
 }
