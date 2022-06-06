@@ -230,33 +230,13 @@ ORDER BY freq DESC
 LIMIT 5
 ```
 
-## Finding persons with similar travel history to Vietnam by date
+## Use case: Finding persons with similar travel history to Vietnam by date
 ```
 MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})-[aon:arriving_on]->(ad:arrivaldate)
 RETURN collect(p.name) as list_of_person_arriving_in_vietnam, ad.date as date
 ```
 
-## Use case: 
-
-## Finding common institution studied at (Answer: Smart University of Vietnam)
-```
-
-MATCH (:Reader {name:'Alice'})-[:LIKES]->(:Book {title:'Dune'})
- <-[:LIKES]-(:Reader)-[:LIKES]->(books:Book)
-RETURN books.title
-
-MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})
-RETURN p.name
-```
-
-## Use case: Finding person with similar interest in Vietnam
-
-```
-MATCH (p:person)-[d:is_departing_from]->(ori:origin)-[o:on]->(dep:departuredate)-[t:to]->(arr:destination {country:'Vietnam'})-[aon:arriving_on]->(ad:arrivaldate { date: 'Sunday, 26 September 2021' })
-RETURN p
-```
-
-## Use case: 
+## Use case: Finding relationship connected by Vietnam between the 3 person
 
 
 # Ingest Data to Neo4j Sandbox Environment for Neo4j Bloom analysis
