@@ -245,7 +245,7 @@ conn.query(query_string, db='testdb')
 
 ```
 MATCH (p:person)-[t:makes_transaction_at]->(m:merchant)
-RETURN m.country AS country, sum(toInteger(substring(t.amount, 1))) AS country_total_transaction
+RETURN m.country AS country, sum(t.amount) AS country_total_transaction
 ORDER BY country_total_transaction DESC
 
 ```
