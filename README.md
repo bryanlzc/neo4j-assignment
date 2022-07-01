@@ -143,7 +143,7 @@ query_string = '''
     MERGE (i:institution {name: row.nameofinstitution, country: row.country })
     MERGE (c:course {name: row.course })
     ON CREATE SET p.name = row.name, p.passportnumber = row.passportnumber
-    MERGE (c)<-[:enrolled_in {startyear: row.startyear, endyear: row.endyear}]-(p)-[:studied_in {startyear: row.startyear, endyear: row.endyear}]->(i)
+    MERGE (c)<-[:enrolled_in {startyear: toInteger(row.startyear), endyear: toInteger(row.endyear)}]-(p)-[:studied_in {startyear: toInteger(row.startyear), endyear: toInteger(row.endyear)}]->(i)
     WITH i,c,p
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_education.csv' as row
     MATCH (i:institution {name: row.nameofinstitution, country: row.country })
@@ -154,6 +154,7 @@ query_string = '''
     MERGE (co:country {country: row.country})
     MERGE (i)-[:located_in]->(co)
     MERGE (p)-[:studied_in]->(co)
+    
 '''
 
 
@@ -167,11 +168,11 @@ conn.query(query_string, db='neo4j')
 # Data model for work dataset
 query_string = '''
 
-    LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_work.csv' as row
+    LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_work.csv' as row 
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })      
     MERGE (o:organization {name: row.nameoforganization, country: row.country })
     MERGE (des:designation { name: row.designation})
-    MERGE (des)<-[:designation_is {startyear: row.startyear, endyear: row.endyear}]-(p)-[:works_for {startyear: row.startyear, endyear: row.endyear}]->(o)
+    MERGE (des)<-[:designation_is {startyear: toInteger(row.startyear), endyear: toInteger(replace(row.endyear, "Present", "2022"))}]-(p)-[:works_for {startyear: toInteger(row.startyear), endyear: toInteger(replace(row.endyear, "Present", "2022"))}]->(o)
     WITH o,p,des
     LOAD CSV WITH HEADERS FROM 'https://gist.githubusercontent.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc/raw/a46af9c6c4bf875ded877140c112e9ff36f8f2e8/sng_work.csv' as row
     MATCH (o:organization {name: row.nameoforganization, country: row.country })
@@ -194,7 +195,7 @@ query_string = '''
     MATCH (p:person { name: row.name, passportnumber: row.passportnumber })      
     MERGE (m:merchant {name: row.merchant, country: row.country })
     MERGE (co:country {country: row.country})
-    MERGE (p)-[:makes_transaction_at {transactiondate: row.transactiondate, amount: row.amount, cardnumber: row.cardnumber}]->(m)
+    MERGE (p)-[:makes_transaction_at {transactiondate: row.transactiondate, amount: toFloatOrNull(replace(row.amount, "$", "")), cardnumber: row.cardnumber}]->(m)
     MERGE (p)-[:makes_transaction_in]->(co)
     
 '''
