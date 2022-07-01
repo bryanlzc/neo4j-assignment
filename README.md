@@ -46,6 +46,7 @@ password: test
 Pre-requisite: Install Neo4j python library
 ```
 pip3 install neo4j
+pip install GraphDataScience
 ```
 ## Using Social Network dataset [Social Network](https://gist.github.com/maruthiprithivi/10b456c74ba99a35a52caaffafb9d3dc)
 
@@ -53,6 +54,8 @@ pip3 install neo4j
 Run the below in Jupyter Notebook to establish connection to Neo4j server:
 ```
 from neo4j import GraphDatabase
+from graphdatascience import GraphDataScience
+import pandas as pd
 
 class Neo4jConnection:
     
@@ -242,7 +245,25 @@ conn.query(query_string, db='testdb')
 ```
 
 # Cypher queries 
-## Finding the total transacted amount in each individual country sorted by descending order (Answer: Vietnam - Highest amount transacted)
+## Identify the most influential country using Eigenvector's centrality algorithm
+```
+CALL gds.graph.project(
+  'countryeigen',
+  ["person","country"],
+  ["travelling_to", "makes_transaction_in", "studied_in"]
+)
+```
+Note: gds.graph.create has depcrecated. 
+
+```
+CALL gds.eigenvector.stream('countryeigen')
+YIELD nodeId, score
+RETURN gds.util.asNode(nodeId).country AS name, score
+ORDER BY score DESC, name ASC
+```
+Note: High eigenvector score means that a node is connected to many nodes who themselves have high scores
+
+## Identify the total transacted amount in each individual country sorted by descending order (Answer: Vietnam - Highest amount transacted)
 
 ```
 MATCH (p:person)-[t:makes_transaction_at]->(m:merchant)
