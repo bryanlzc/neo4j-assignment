@@ -255,6 +255,7 @@ CALL gds.graph.project(
 ```
 Note: gds.graph.create has depcrecated. 
 
+
 ```
 CALL gds.eigenvector.stream('countryeigen')
 YIELD nodeId, score
@@ -262,6 +263,7 @@ RETURN gds.util.asNode(nodeId).country AS name, score
 ORDER BY score DESC, name ASC
 ```
 Note: High eigenvector score means that a node is connected to many nodes who themselves have high scores
+We can use Neo4j's graph data science library to find out the most influential country using eigenvector centrality algorithm. This means that Vietnam is highly centralized and connected to other nodes with high score.
 
 ## Identify the total transacted amount in each individual country sorted by descending order (Answer: Vietnam - Highest amount transacted)
 
