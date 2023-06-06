@@ -1,0 +1,5 @@
+urlbackup: /home/backup/
+dbbackup: dummy
+containername: <containername>
+storagename: <storagename>
+tokencredential: <tokencredential>
