@@ -1,0 +1,7 @@
+urlrestore: /home/backup/
+dbrestore: dummy
+username: <username>
+password: <password>
+scheme: <scheme>
+host: <host>
+port: <port>
