@@ -9,14 +9,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Push-Main
-        uses: dmnemec/copy_file_to_another_repo_action@main
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.TOKEN }}
         with:
-          source_file: '/.'
-          destination_repo: 'bryanz994/neo4j_enigma'
-          destination_folder: 'api'
-          user_email: 'contact@released.info'
-          user_name: 'contactReleasedInfo'
-          commit_message: 'update all'
+          source-directory: '.'
+          target-directory: 'api'
+          destination-github-username: 'bryanz994'
+          destination-repository-name: 'neo4j_enigma'
+          target-branch: main
