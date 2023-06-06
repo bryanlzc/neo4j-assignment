@@ -15,7 +15,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.TOKEN }}
         with:
           source-directory: '/.'
-          target-directory: '/api'
+          target-directory: 'api'
           destination-github-username: 'bryanz994'
           destination-repository-name: 'neo4j_enigma'
           target-branch: main
