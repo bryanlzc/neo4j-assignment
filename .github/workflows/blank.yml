@@ -9,12 +9,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Pushes to another repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.TOKEN }}
+      - name: Config git
+        run: |
+          git config --unset-all http.https://github.com/.extraheader
+
+      - name: Copycat
+        uses: andstor/copycat-action@v3
         with:
-          source-directory: .
-          destination-github-username: 'bryanz994'
-          destination-repository-name: 'neo4j_enigma'
-          target-branch: main
+          personal_token: ${{ secrets.TOKEN }}
+          src_path: /.
+          dst_path: /api
+          dst_owner: bryanz994
+          dst_repo_name: neo4j_enigma
+          dst_branch: master
+          src_branch: master
+          username: bryanz994
+          email: andr3.storhaug+bot@gmail.com
