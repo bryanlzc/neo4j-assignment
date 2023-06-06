@@ -1,0 +1,22 @@
+name: Sync Repository
+on:
+  workflow_dispatch:
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Push-Main
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.TOKEN }}
+        with:
+          source_file: '/.'
+          destination_repo: 'bryanz994/neo4j_enigma'
+          destination_folder: 'api'
+          user_email: 'contact@released.info'
+          user_name: 'contactReleasedInfo'
+          commit_message: 'update all'
