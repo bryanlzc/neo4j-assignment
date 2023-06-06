@@ -17,11 +17,11 @@ jobs:
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.TOKEN }}
-          src_path: .
+          src_path: /.
           dst_path: /api
           dst_owner: bryanz994
           dst_repo_name: neo4j_enigma
-          dst_branch: master
-          src_branch: master
+          dst_branch: main
+          src_branch: main
           username: bryanz994
           email: andr3.storhaug+bot@gmail.com
